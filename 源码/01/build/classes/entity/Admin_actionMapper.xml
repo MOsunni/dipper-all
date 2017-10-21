@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="admin">
+
+	<!-- type:映射的实体类全名 -->
+	<resultMap type="entity.Admin_action" id="admin_actionMapper">
+		<id property="admin_action_id" column="admin_action_id"/>
+		<result property="admin_action_name" column="admin_action_name"/>
+		<result property="admin_action_note" column="admin_action_note"/>
+	</resultMap>
+	
+	<!-- 查询所有管理权限 -->
+	<select id="selectAllAction" parameterType="int" resultMap="admin_actionMapper">
+		select admin_username,admin_password from admin_im where admin_username=#{username} and admin_password=#{password}
+	</select>
+	
+</mapper>

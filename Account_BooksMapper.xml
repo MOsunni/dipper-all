@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.pwrd.account.dao.Account_BooksDao">
+
+	<select id="findAll" resultType="com.pwrd.account.entity.Account_Books">
+		SELECT a_b.account_id,
+		a_b.user_id,
+		a_t.account_type,
+		a_b.account_money,
+		a_e_a_r.account_expenses_and_receipts,
+		a_b.account_datetime,
+		a_p_a_g.pay_and_get_type,
+		a_b.account_remarks
+		FROM account_books a_b,
+		account_type a_t,
+		account_expenses_and_receipts a_e_a_r,
+		account_pay_and_get a_p_a_g
+		WHERE a_b.user_id=#{0}
+		AND a_b.account_type=a_t.account_type_id
+		AND a_b.account_expenses_and_receipts=a_e_a_r.expenses_and_receipts_id
+		AND a_b.account_pay_and_get=a_p_a_g.pay_and_get_id ORDER BY a_b.account_datetime DESC LIMIT #{1},#{2};
+
+	</select>
+	<select id="count" resultType="int">
+		SELECT 
+		count(*)
+		FROM account_books a_b,
+		account_type a_t,
+		account_expenses_and_receipts a_e_a_r,
+		account_pay_and_get a_p_a_g
+		WHERE a_b.user_id=#{user_id}
+		AND a_b.account_type=a_t.account_type_id
+		AND a_b.account_expenses_and_receipts=a_e_a_r.expenses_and_receipts_id
+		AND a_b.account_pay_and_get=a_p_a_g.pay_and_get_id;
+	</select>
+	
+	
+</mapper>

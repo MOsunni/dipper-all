@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="entity.IAdminEntity">
+
+	<!-- type:映射的实体类全名 -->
+	<resultMap type="entity.Admin_im" id="admin_imMapper">
+		<id property="admin_id" column="admin_id"/>
+		<result property="admin_username" column="admin_username"/>
+		<result property="admin_password" column="admin_password"/>
+		<result property="admin_name" column="admin_name"/>
+		<result property="admin_phone" column="admin_phone"/>
+		<result property="admin_email" column="admin_email"/>
+		<association property="admin_action" javaType="entity.Admin_action">
+			<id property="admin_action_id" column="admin_action_id"/>
+			<result property="admin_action_name" column="admin_action_name"/>
+			<result property="admin_action_note" column="admin_action_note"/>
+		</association>
+	</resultMap>
+	
+	<!-- 后台登陆验证
+	<select id="selectByNamePassword" parameterType="map" resultMap="admin_imMapper">
+		select admin_id,admin_username,admin_password from admin_im where admin_username=#{username} and admin_password=#{password}
+	</select> -->
+	
+	<!-- 查询全部管理员 -->
+	<select id="selectAllAdmin" resultMap="admin_imMapper">
+		select
+		 a.admin_id,a.admin_username,a.admin_password,a.admin_name,a.admin_phone,a.admin_email,b.admin_action_id,b.admin_action_name,b.admin_action_note 
+		 from 
+		 admin_im a,admin_action b 
+		 where 
+		 a.admin_action_id = b.admin_action_id
+	</select>
+	
+	<!-- 新增admin_im元素 -->
+	<insert id="insert" parameterType="entity.Admin_im">
+		insert into admin_im (
+			admin_username,
+			admin_password,
+			admin_name,
+			admin_phone,
+			admin_email,
+			admin_action_id
+		)values(
+			#{admin_username},
+			#{admin_password},
+			#{admin_name},
+			#{admin_phone},
+			#{admin_email},
+			#{admin_action.admin_action_id}
+		)
+	</insert>
+	
+	<!-- 更新操作 -->
+	<update id="update" parameterType="entity.Admin_im">
+		update admin_im set 
+			admin_username=#{admin_username},
+			admin_password=#{admin_password},
+			admin_name=#{admin_name},
+			admin_phone=#{admin_phone},
+			admin_email=#{admin_email},
+			admin_action_id=#{admin_action.admin_action_id}
+		 where admin_id=#{admin_id}
+	</update>
+	
+	<!-- 删除操作 -->
+	<delete id="delete" parameterType="int">
+		delete from admin_im where admin_id=#{admin_id}
+	</delete>
+	
+	<!-- Action mapper权限映射 -->
+	<resultMap type="entity.Admin_action" id="admin_actionMapper">
+		<id property="admin_action_id" column="admin_action_id"/>
+		<result property="admin_action_name" column="admin_action_name"/>
+		<result property="admin_action_note" column="admin_action_note"/>
+	</resultMap>
+	
+	<!-- 查询所有管理权限 -->
+	<select id="selectAllAction" resultMap="admin_actionMapper">
+		select * from admin_action
+	</select>
+	
+	
+</mapper>

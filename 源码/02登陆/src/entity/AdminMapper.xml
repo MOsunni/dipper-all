@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.AdminDao">
+
+	<!-- 后台登陆验证 -->
+	<select id="selectByNamePassword" parameterType="map" resultType="admin_im">
+		select admin_id,admin_username,admin_password from admin_im where admin_username=#{username} and admin_password=#{password}
+	</select>
+	
+	<!-- 查询全部管理员 -->
+	<select id="selectAllAdmin" resultType="admin_im">
+		select
+		 a.admin_id,a.admin_username,a.admin_password,a.admin_name,a.admin_phone,a.admin_email,b.admin_action_id,b.admin_action_name,b.admin_action_note 
+		 from 
+		 admin_im a,admin_action b 
+		 where 
+		 a.admin_action_id = b.admin_action_id
+	</select>
+	
+	<!-- 新增admin_im元素 -->
+	<insert id="insert" parameterType="entity.Admin_im">
+		insert into admin_im (
+			admin_username,
+			admin_password,
+			admin_name,
+			admin_phone,
+			admin_email,
+			admin_action_id
+		)values(
+			#{admin_username},
+			#{admin_password},
+			#{admin_name},
+			#{admin_phone},
+			#{admin_email},
+			#{admin_action.admin_action_id}
+		)
+	</insert>
+	
+	<!-- 更新操作 -->
+	<update id="update" parameterType="entity.Admin_im">
+		update admin_im set 
+			admin_username=#{admin_username},
+			admin_password=#{admin_password},
+			admin_name=#{admin_name},
+			admin_phone=#{admin_phone},
+			admin_email=#{admin_email},
+			admin_action_id=#{admin_action.admin_action_id}
+		 where admin_id=#{admin_id}
+	</update>
+	
+	<!-- 删除操作 -->
+	<delete id="delete" parameterType="int">
+		delete from admin_im where admin_id=#{admin_id}
+	</delete>
+	
+	<!-- 查询所有管理权限 -->
+	<select id="selectAllAction"  resultType="admin_action">
+		select * from admin_action
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.ImgDao">
+	
+	<!-- 图片IMG的映射
+	<resultMap type="entity.Img" id="img">
+	
+		<id property="img_id" column="img_id"/>
+		<result property="img_name" column="img_name"/>
+		<result property="img_filename" column="img_filename"/>
+		<result property="img_sizekb" column="img_sizekb"/>
+		<result property="img_time" column="img_time"/>
+		<result property="img_type_id" column="img_type_id"/>
+		<result property="img_fileup_id" column="img_fileup_id"/>
+		
+	</resultMap> -->
+	
+	<!-- 增加图片 --> 
+	<insert id="insertImg" parameterType="img">
+		insert into img(
+			img_id,img_name,img_filename,
+			img_sizekb,img_time,img_type_id,img_fileup_id
+		) values(
+			#{img_id},#{img_name},#{img_filename},
+			#{img_sizekb},#{img_time},#{img_type_id},#{img_fileup_id}
+		)
+	</insert>
+	
+	<!-- 增加上传记录 --> 
+	<insert id="insertFileup" parameterType="img_fileup">
+		insert into img_fileup(
+			img_fileup_time,admin_id
+		) values(
+			#{img_fileup_time},#{admin_id}
+		)
+	</insert>
+	
+	<!-- 在上传图片前的进行查询选中的图片分类查询 -->
+	<select id="selectTypeByName" parameterType="String" resultType="img_type">
+		select * from img_type where img_type_name = #{img_type_name}
+	</select>
+	
+	<!-- 增加下载记录 --> 
+	<insert id="insertFiledown" parameterType="img_filedown">
+		insert into img_filedown(
+			img_filedown_time,user_id,img_id
+		) values(
+			#{img_filedown_time},#{user_id},#{img_id}
+		)
+	</insert>
+	
+	<!-- 更改图片 --> 
+	<update id="updateImg" parameterType="img">
+		update img 
+		set 
+			img_name = #{img_name},
+			img_time = #{img_time},
+			img_type_id = #{img_type_id}
+		where
+			img_id=#{img_id}
+	</update>
+	
+	<!-- 分页：所有图片分页查询 --> 
+	<select id="selectAllImgFY" parameterType="map" resultMap="img">
+		select * from img i, img_type t 
+		where i.img_type_id = t.img_type_id 
+		limit #{start},#{size}
+	</select>
+	
+	<!-- 分页：根据时间排序 -->
+	<!-- 分页：根据类型 -->
+	<!-- 分页：下载量 -->
+	<select id="" parameterType="" resultType="">
+		select 
+		
+		from img
+		order by
+		<if test="## != null">
+			
+		</if>
+		<if test="## != null">
+			
+		</if>
+		<if test="## != null">
+			
+		</if>
+		limit #{start},#{size}
+	</select>
+	
+	<!--  --> 
+	<select id="" parameterType="" resultType="">
+		
+	</select>
+	
+	<!--  --> 
+	<select id="" parameterType="" resultType="">
+		
+	</select>
+	
+	<!--  --> 
+	<select id="" parameterType="" resultType="">
+		
+	</select>
+	
+	<!--  --> 
+	<select id="" parameterType="" resultType="">
+		
+	</select>
+	
+</mapper>
